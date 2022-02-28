@@ -88,7 +88,7 @@ class SocketIrcConnection extends IrcConnection {
 }
 
 class WebSocketIrcConnection extends IrcConnection {
-  late WebSocket _socket;
+  late WebSocketChannel _socket;
 
   @override
   Future connect(Configuration? config) async {
@@ -98,23 +98,23 @@ class WebSocketIrcConnection extends IrcConnection {
         host: config.host,
         path: config.websocketPath);
 
-    _socket = await WebSocket.connect(uri.toString());
+    _socket = WebSocketChannel.connect(uri);
   }
 
   @override
   Future disconnect() async {
-    await _socket.close(WebSocketStatus.normalClosure, 'IRC disconnect.');
+    await _socket.sink.close(web_socket_status.normalClosure, 'IRC disconnect.');
   }
 
   @override
   Stream<String> lines() {
-    return _socket.where((e) => e is String).cast<String>().map((String line) {
+    return _socket.stream.where((e) => e is String).cast<String>().map((String line) {
       return line.substring(0, line.length - 2);
     });
   }
 
   @override
   void send(String line) {
-    _socket.add('${line}\r\n');
+    _socket.sink.add('${line}\r\n');
   }
 }

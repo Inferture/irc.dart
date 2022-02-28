@@ -6,6 +6,9 @@ import 'dart:async';
 import 'dart:convert';
 //import 'dart:mirrors';
 
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/status.dart' as web_socket_status; 
+
 // Import pedantic for unawaited
 import 'package:pedantic/pedantic.dart';
 
